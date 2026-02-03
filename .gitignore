@@ -1,0 +1,33 @@
+# Binaries
+hermes
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Config files with secrets
+robot.json
+*.secret
+*.key
+*.pem
+
+# Go
+go.sum
+vendor/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+*.log
+
+# DevBox
+.devbox/
