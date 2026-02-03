@@ -14,7 +14,7 @@ Create `/home/nixos/robot.json`:
 
 ```json
 {
-  "user": "#ws+your_user",
+  "user": "#your_user",
   "password": "your_password",
   "failover_ip": "203.0.113.1"
 }
@@ -23,7 +23,7 @@ Create `/home/nixos/robot.json`:
 Or use environment variables:
 
 ```bash
-export HETZNER_USER="#ws+your_user"
+export HETZNER_USER="#your_user"
 export HETZNER_PASS="your_password"
 export FAILOVER_IP="203.0.113.1"
 ```
@@ -54,5 +54,6 @@ vrrp_instance VI_1 {
 devbox shell
 go build
 ```
+
 
 
