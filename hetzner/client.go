@@ -18,13 +18,13 @@ func UpdateFailover(user, pass, failoverIP, targetIP string, dryRun bool) error 
 
 	if dryRun {
 		fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-		fmt.Println("🔍 DRY-RUN: Would execute the following:")
-		fmt.Printf("  📍 Endpoint: %s\n", endpoint)
-		fmt.Printf("  👤 User: %s\n", user)
-		fmt.Printf("  🔑 Password: %s\n", maskPassword(pass))
-		fmt.Printf("  📦 Data: active_server_ip=%s\n", targetIP)
+		fmt.Println(" DRY-RUN: Would execute the following:")
+		fmt.Printf("   Endpoint: %s\n", endpoint)
+		fmt.Printf("   User: %s\n", user)
+		fmt.Printf("   Password: %s\n", maskPassword(pass))
+		fmt.Printf("   Data: active_server_ip=%s\n", targetIP)
 		fmt.Println("")
-		fmt.Println("📋 Equivalent curl command:")
+		fmt.Println(" Equivalent curl command:")
 		fmt.Printf("curl -X POST '%s' \\\n", endpoint)
 		fmt.Printf("  -u '%s:%s' \\\n", user, maskPassword(pass))
 		fmt.Printf("  -H 'Content-Type: application/x-www-form-urlencoded' \\\n")
@@ -59,10 +59,5 @@ func UpdateFailover(user, pass, failoverIP, targetIP string, dryRun bool) error 
 	return nil
 }
 
-func maskPassword(pass string) string {
-	if len(pass) <= 4 {
-		return "****"
-	}
-	return pass[:2] + "****" + pass[len(pass)-2:]
-}
+
 
