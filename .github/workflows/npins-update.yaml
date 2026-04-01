@@ -1,0 +1,42 @@
+name: npins update
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours
+permissions:
+  contents: "write"
+  pull-requests: "write"
+jobs:
+  get-pins:
+    runs-on: ubuntu-latest
+    outputs:
+      pins: ${{ steps.set-pins.outputs.pins }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - id: set-pins
+        run: |
+          PINS=$(jq -c '[.pins | to_entries[] | select(.value.frozen != true) | .key]' npins/sources.json)
+          echo "pins=$PINS" >> "$GITHUB_OUTPUT"
+  npins-update:
+    needs: get-pins
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        pin: ${{ fromJson(needs.get-pins.outputs.pins) }}
+      fail-fast: false
+      max-parallel: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update npins
+        run: nix run github:nixos/npins -- update ${{ matrix.pin }}
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(deps): update ${{ matrix.pin }}"
+          title: "chore(deps): update ${{ matrix.pin }}"
+          body: "This PR updates the pinned source `${{ matrix.pin }}` using `npins update ${{ matrix.pin }}`."
+          branch: "npins-update-${{ matrix.pin }}"
+          delete-branch: true
