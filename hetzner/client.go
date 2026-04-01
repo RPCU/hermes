@@ -2,10 +2,10 @@ package hetzner
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
-	"io"
 )
 
 const baseURL = "https://robot-ws.your-server.de"
@@ -49,7 +49,7 @@ func UpdateFailover(user, pass, failoverIP, targetIP string, dryRun bool) error 
 	defer resp.Body.Close()
 
 	bodyBytes, _ := io.ReadAll(resp.Body)
-	
+
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("API request failed with status %d: %s", resp.StatusCode, string(bodyBytes))
 	}
@@ -58,4 +58,3 @@ func UpdateFailover(user, pass, failoverIP, targetIP string, dryRun bool) error 
 
 	return nil
 }
-

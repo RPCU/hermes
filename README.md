@@ -54,6 +54,3 @@ vrrp_instance VI_1 {
 devbox shell
 go build
 ```
-
-
-

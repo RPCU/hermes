@@ -29,5 +29,18 @@ Thumbs.db
 dist/
 *.log
 
-# DevBox
-.devbox/
+# Devenv
+.devenv/
+devenv.local.nix
+devenv.local.yaml
+
+# npins
+npins/
+
+# direnv
+.direnv
+
+# Env
+.env
+.env.local
+.env.*.local
