@@ -34,8 +34,6 @@ dist/
 devenv.local.nix
 devenv.local.yaml
 
-# npins
-npins/
 
 # direnv
 .direnv
