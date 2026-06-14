@@ -1,11 +1,14 @@
+// Package config handles the application configuration from files and environment variables.
 package config
 
 import (
 	"encoding/json"
 	"fmt"
+	"net"
 	"os"
 )
 
+// Config holds all the configuration needed for Hermes.
 type Config struct {
 	HetznerUser string
 	HetznerPass string
@@ -13,16 +16,17 @@ type Config struct {
 	MainIP      string
 }
 
+// Load loads the configuration from the default location and environment variables.
 func Load() (*Config, error) {
-	return LoadWithDryRun(false)
+	return LoadFromPath("/home/nixos/robot.json")
 }
 
-func LoadWithDryRun(dryRun bool) (*Config, error) {
+// LoadFromPath loads the configuration from a specific file path and environment variables.
+func LoadFromPath(path string) (*Config, error) {
 	cfg := &Config{}
 
-	// Load from credentials file
-	credsPath := "/home/nixos/robot.json"
-	if f, err := os.ReadFile(credsPath); err == nil {
+	// Load from credentials file if it exists
+	if f, err := os.ReadFile(path); err == nil {
 		var fileCreds struct {
 			User       string `json:"user"`
 			Pass       string `json:"password"`
@@ -51,13 +55,21 @@ func LoadWithDryRun(dryRun bool) (*Config, error) {
 
 	// Validate required fields
 	if cfg.HetznerUser == "" {
-		return nil, fmt.Errorf("HetznerUser is required (env HETZNER_USER or %s)", credsPath)
+		return nil, fmt.Errorf("HetznerUser is required (env HETZNER_USER or in %s)", path)
 	}
 	if cfg.HetznerPass == "" {
-		return nil, fmt.Errorf("HetznerPass is required (env HETZNER_PASS or %s)", credsPath)
+		return nil, fmt.Errorf("HetznerPass is required (env HETZNER_PASS or in %s)", path)
 	}
 	if cfg.FailoverIP == "" {
-		return nil, fmt.Errorf("FailoverIP is required (env FAILOVER_IP or %s)", credsPath)
+		return nil, fmt.Errorf("FailoverIP is required (env FAILOVER_IP or in %s)", path)
+	}
+
+	// Validate IP formats
+	if net.ParseIP(cfg.FailoverIP) == nil {
+		return nil, fmt.Errorf("invalid failover IP address: %s", cfg.FailoverIP)
+	}
+	if cfg.MainIP != "" && net.ParseIP(cfg.MainIP) == nil {
+		return nil, fmt.Errorf("invalid main IP address: %s", cfg.MainIP)
 	}
 
 	return cfg, nil
