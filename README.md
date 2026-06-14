@@ -4,13 +4,7 @@ Hetzner Failover IP Monitor - Automatically updates failover IP routing via Hetz
 
 Hermes is a small Go utility designed to be used with `keepalived` (or similar VRRP tools). It monitors if a failover IP is assigned to the local machine and ensures that the Hetzner Robot API is updated to route traffic to the current node.
 
-## Features
 
-- **Automatic Failover**: Updates Hetzner Robot API when the failover IP is detected locally.
-- **Auto-detection**: Automatically detects the machine's main IP if not provided.
-- **Structured Logging**: Uses `log/slog` for modern, parseable logs.
-- **Dry-run Mode**: Test your configuration without making actual API calls.
-- **Robust**: Unit tested and written in idiomatic Go.
 
 ## How it Works
 
