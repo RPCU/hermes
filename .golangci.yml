@@ -1,0 +1,21 @@
+linters:
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - gosimple
+    - ineffassign
+    - misspell
+    - gocritic
+    - errorlint
+
+linters-settings:
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+  errorlint:
+    errorf: true
+    asserts: true
+    comparison: true
